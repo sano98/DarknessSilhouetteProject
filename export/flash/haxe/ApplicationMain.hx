@@ -38,6 +38,10 @@ class ApplicationMain {
 		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
+		urls.push ("assets/images/blood_moon.png");
+		types.push (lime.Assets.AssetType.IMAGE);
+		
+		
 		urls.push ("assets/images/cloud01.png");
 		types.push (lime.Assets.AssetType.IMAGE);
 		
@@ -147,7 +151,7 @@ class ApplicationMain {
 		
 		config = {
 			
-			build: "181",
+			build: "185",
 			company: "HaxeFlixel",
 			file: "DarknessSilhouetteProject",
 			fps: 60,

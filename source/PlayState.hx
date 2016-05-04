@@ -29,7 +29,6 @@ class PlayState extends FlxState
 	public var silhouette:FlxSprite;
 	
 	public var darkness:BitmapData;
-	public var emptiness:BitmapData;
 	
 	public var tileMapBuffer:FlxTilemapBuffer;
 	
@@ -55,7 +54,6 @@ class PlayState extends FlxState
 		this.silhouette = new FlxSprite(0, 0);
 		this.silhouette.makeGraphic(640, 480, 0x00000000);
 		this.darkness = new BitmapData(640, 480, true, 0xFF000000);
-		this.emptiness = new BitmapData(640, 480, true, 0xFF000000);
 		
 		this.tileMapBuffer = new FlxTilemapBuffer(32, 32, 20, 8);
 		
@@ -155,20 +153,11 @@ class PlayState extends FlxState
 		//this.silhouette.pixels.copyPixels(this.emptiness, new Rectangle(this.lightCone.x, this.lightCone.y, this.lightCone.width, this.lightCone.height), new Point(this.lightCone.x, this.lightCone.y), this.lightCone.pixels, new Point (0,0), true);
 		
 		
-		//var a:Int = this.lightCone.x;
-		//var b:Int = this.lightCone.y;
 		
 		this.silhouette.stamp(this.lightCone, Std.int(this.lightCone.x), Std.int(this.lightCone.y));
 		this.silhouette.stamp(this.mouseLightCone, Std.int(this.mouseLightCone.x), Std.int(this.mouseLightCone.y));
-
 		
-		
-		//this.silhouette.pixels.draw(this.lightCone.pixels, null, null, openfl.display.BlendMode.SCREEN, null, false);
-		
-		//this.lightCone.blend = HARDLIGHT;
-		//this.silhouette.stamp(this.lightCone, 0, 0);
-		
-		//this.silhouette.alpha = 0.7;
+		this.silhouette.alpha = 0.9;
 		//this.silhouette.blend = LIGHTEN;
 	}
 	
@@ -211,7 +200,7 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float):Void
 	{
-		super.update(elapsed);
+		
 		
 		if (!(this._day))
 		{
@@ -226,5 +215,7 @@ class PlayState extends FlxState
 		{
 			girlDirection();
 		}
+		
+		super.update(elapsed);
 	}
 }
