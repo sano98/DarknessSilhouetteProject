@@ -63,6 +63,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
 		openfl.text.Font.registerFont (__ASSET__OPENFL__flixel_fonts_nokiafc22_ttf);
 		openfl.text.Font.registerFont (__ASSET__OPENFL__flixel_fonts_monsterrat_ttf);
 		
@@ -85,6 +86,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/images/glow-light.png", AssetType.IMAGE);
 		className.set ("assets/images/images-go-here.txt", __ASSET__assets_images_images_go_here_txt);
 		type.set ("assets/images/images-go-here.txt", AssetType.TEXT);
+		className.set ("assets/images/pixel sun.png", __ASSET__assets_images_pixel_sun_png);
+		type.set ("assets/images/pixel sun.png", AssetType.IMAGE);
 		className.set ("assets/images/tile_brickwall2.png", __ASSET__assets_images_tile_brickwall2_png);
 		type.set ("assets/images/tile_brickwall2.png", AssetType.IMAGE);
 		className.set ("assets/music/music-goes-here.txt", __ASSET__assets_music_music_goes_here_txt);
@@ -134,6 +137,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		path.set (id, id);
 		
 		type.set (id, AssetType.TEXT);
+		id = "assets/images/pixel sun.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
 		id = "assets/images/tile_brickwall2.png";
 		path.set (id, id);
 		
@@ -204,6 +211,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("assets/images/images-go-here.txt", __ASSET__assets_images_images_go_here_txt);
 		type.set ("assets/images/images-go-here.txt", AssetType.TEXT);
+		
+		className.set ("assets/images/pixel sun.png", __ASSET__assets_images_pixel_sun_png);
+		type.set ("assets/images/pixel sun.png", AssetType.IMAGE);
 		
 		className.set ("assets/images/tile_brickwall2.png", __ASSET__assets_images_tile_brickwall2_png);
 		type.set ("assets/images/tile_brickwall2.png", AssetType.IMAGE);
@@ -879,6 +889,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep @:bind #if display private #end class __ASSET__assets_images_gameobject_armchairb_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_glow_light_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_images_go_here_txt extends flash.utils.ByteArray { }
+@:keep @:bind #if display private #end class __ASSET__assets_images_pixel_sun_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_tile_brickwall2_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_music_music_goes_here_txt extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__assets_sounds_sounds_go_here_txt extends flash.utils.ByteArray { }
@@ -890,6 +901,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 #elseif html5
+
 
 
 
@@ -922,6 +934,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:image("assets/images/gameObject_armchairB.png") #if display private #end class __ASSET__assets_images_gameobject_armchairb_png extends lime.graphics.Image {}
 @:image("assets/images/glow-light.png") #if display private #end class __ASSET__assets_images_glow_light_png extends lime.graphics.Image {}
 @:file("assets/images/images-go-here.txt") #if display private #end class __ASSET__assets_images_images_go_here_txt extends lime.utils.Bytes {}
+@:image("assets/images/pixel sun.png") #if display private #end class __ASSET__assets_images_pixel_sun_png extends lime.graphics.Image {}
 @:image("assets/images/tile_brickwall2.png") #if display private #end class __ASSET__assets_images_tile_brickwall2_png extends lime.graphics.Image {}
 @:file("assets/music/music-goes-here.txt") #if display private #end class __ASSET__assets_music_music_goes_here_txt extends lime.utils.Bytes {}
 @:file("assets/sounds/sounds-go-here.txt") #if display private #end class __ASSET__assets_sounds_sounds_go_here_txt extends lime.utils.Bytes {}

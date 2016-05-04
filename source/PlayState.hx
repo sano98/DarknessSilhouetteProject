@@ -23,6 +23,8 @@ class PlayState extends FlxState
 	
 	public var couchSprite:FlxSprite;
 	public var cloudSprite:FlxSprite;
+	public var sunSprite:FlxSprite;
+	public var moonSprite:FlxSprite;
 	
 	public var girlSprite:FlxSprite;
 	
@@ -61,6 +63,16 @@ class PlayState extends FlxState
 		this.cloudSprite.loadGraphic("assets/images/cloud01.png", false, 108, 26, false);
 		this.add(this.cloudSprite);
 		
+		this.sunSprite = new FlxSprite(350, 40);
+		this.sunSprite.loadGraphic("assets/images/pixel sun.png", false, 128, 133, false);
+		this.add(this.sunSprite);
+		this.sunSprite.blend = HARDLIGHT;
+		
+		this.moonSprite = new FlxSprite(350, 30);
+		this.moonSprite.loadGraphic("assets/images/blood_moon.png", false, 128, 128, false);
+		this.add(this.moonSprite);
+		this.moonSprite.visible = false;
+		
 		
 		this.brickString = "0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3;\n";
 		this.brickString = this.brickString + "0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3;\n";
@@ -90,11 +102,8 @@ class PlayState extends FlxState
 		girlSprite.loadGraphic("assets/images/arron jes cycle.png", true, 48, 61, true);
 		//this.girl.pixels = this.bitmapColorTransform(girl.pixels, testColorTransform);
 		girlSprite.animation.add("running", [0, 1, 2, 3, 4, 5, 6, 7], 16);
-		girlSprite.animation.callback = function(n:String, frameNumber:Int, frameIndex:Int):Void
-		{
-			//trace("new frame");
-			//this.silhouette.pixels.copyPixels(this.darkness, new Rectangle(0, 0, 640, 480), new Point(this.girlSprite.x + 50 * frameNumber, this.girlSprite.y), this.girlSprite.framePixels, null, true);
-		}
+		
+		
 		this.add(girlSprite);
 		this.girlSprite.animation.play("running");
 		
@@ -142,9 +151,11 @@ class PlayState extends FlxState
 		_flashRect2.width =  this.girlSprite.framePixels.width;
 		_flashRect2.height =  this.girlSprite.framePixels.height;
 		
-		this.silhouette.pixels.copyPixels(this.darkness, _flashRect2, new Point(this.girlSprite.x, this.girlSprite.y), this.girlSprite.framePixels, new Point (0,0), true);
 		
-		//this.silhouette.pixels.copyPixels(this.darkness, _flashRect2, new Point(this.girlSprite.x, this.girlSprite.y), this.girlSprite.pixels, _flashPoint, true);
+		this.girlSprite.updateFramePixels();
+		//this.silhouette.pixels.copyPixels(this.darkness, _flashRect2, new Point(this.girlSprite.x, this.girlSprite.y), this.girlSprite.framePixels, new Point (0,0), true);
+		
+		this.silhouette.pixels.copyPixels(this.darkness, _flashRect2, new Point(this.girlSprite.x, this.girlSprite.y), this.girlSprite.pixels, _flashPoint, true);
 		_flashRect2.width =  this.girlSprite.framePixels.width;
 		_flashRect2.height =  this.girlSprite.framePixels.height;
 		
@@ -170,12 +181,16 @@ class PlayState extends FlxState
 			this.bgColor = 0xFF112233;
 			this.cloudSprite.color = 0xFF112233;
 			this.silhouette.visible = true;
+			this.moonSprite.visible = true;
+			this.sunSprite.visible = false;
 		}
 		else
 		{
 			this.bgColor = 0xFF77AAFF;
 			this.cloudSprite.color = 0xFFFFFFFF;
 			this.silhouette.visible = false;
+			this.moonSprite.visible = false;
+			this.sunSprite.visible = true;
 		}
 		
 		_day = !_day;
@@ -200,7 +215,7 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float):Void
 	{
-		
+		super.update(elapsed);
 		
 		if (!(this._day))
 		{
@@ -216,6 +231,6 @@ class PlayState extends FlxState
 			girlDirection();
 		}
 		
-		super.update(elapsed);
+		
 	}
 }
