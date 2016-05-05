@@ -64,6 +64,16 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		openfl.text.Font.registerFont (__ASSET__OPENFL__flixel_fonts_nokiafc22_ttf);
 		openfl.text.Font.registerFont (__ASSET__OPENFL__flixel_fonts_monsterrat_ttf);
 		
@@ -86,8 +96,28 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/images/glow-light.png", AssetType.IMAGE);
 		className.set ("assets/images/images-go-here.txt", __ASSET__assets_images_images_go_here_txt);
 		type.set ("assets/images/images-go-here.txt", AssetType.TEXT);
+		className.set ("assets/images/lamp.png", __ASSET__assets_images_lamp_png);
+		type.set ("assets/images/lamp.png", AssetType.IMAGE);
+		className.set ("assets/images/lamp.psd", __ASSET__assets_images_lamp_psd);
+		type.set ("assets/images/lamp.psd", AssetType.BINARY);
+		className.set ("assets/images/lampLightCone.png", __ASSET__assets_images_lamplightcone_png);
+		type.set ("assets/images/lampLightCone.png", AssetType.IMAGE);
+		className.set ("assets/images/lampLightCone.psd", __ASSET__assets_images_lamplightcone_psd);
+		type.set ("assets/images/lampLightCone.psd", AssetType.BINARY);
+		className.set ("assets/images/lampLightCone_green.png", __ASSET__assets_images_lamplightcone_green_png);
+		type.set ("assets/images/lampLightCone_green.png", AssetType.IMAGE);
+		className.set ("assets/images/moon.png", __ASSET__assets_images_moon_png);
+		type.set ("assets/images/moon.png", AssetType.IMAGE);
 		className.set ("assets/images/pixel sun.png", __ASSET__assets_images_pixel_sun_png);
 		type.set ("assets/images/pixel sun.png", AssetType.IMAGE);
+		className.set ("assets/images/red shine.png", __ASSET__assets_images_red_shine_png);
+		type.set ("assets/images/red shine.png", AssetType.IMAGE);
+		className.set ("assets/images/red shine2.png", __ASSET__assets_images_red_shine2_png);
+		type.set ("assets/images/red shine2.png", AssetType.IMAGE);
+		className.set ("assets/images/red wall lamp.png", __ASSET__assets_images_red_wall_lamp_png);
+		type.set ("assets/images/red wall lamp.png", AssetType.IMAGE);
+		className.set ("assets/images/red wall lamp2.png", __ASSET__assets_images_red_wall_lamp2_png);
+		type.set ("assets/images/red wall lamp2.png", AssetType.IMAGE);
 		className.set ("assets/images/tile_brickwall2.png", __ASSET__assets_images_tile_brickwall2_png);
 		type.set ("assets/images/tile_brickwall2.png", AssetType.IMAGE);
 		className.set ("assets/music/music-goes-here.txt", __ASSET__assets_music_music_goes_here_txt);
@@ -137,7 +167,47 @@ class DefaultAssetLibrary extends AssetLibrary {
 		path.set (id, id);
 		
 		type.set (id, AssetType.TEXT);
+		id = "assets/images/lamp.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/lamp.psd";
+		path.set (id, id);
+		
+		type.set (id, AssetType.BINARY);
+		id = "assets/images/lampLightCone.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/lampLightCone.psd";
+		path.set (id, id);
+		
+		type.set (id, AssetType.BINARY);
+		id = "assets/images/lampLightCone_green.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/moon.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
 		id = "assets/images/pixel sun.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/red shine.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/red shine2.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/red wall lamp.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/red wall lamp2.png";
 		path.set (id, id);
 		
 		type.set (id, AssetType.IMAGE);
@@ -212,8 +282,38 @@ class DefaultAssetLibrary extends AssetLibrary {
 		className.set ("assets/images/images-go-here.txt", __ASSET__assets_images_images_go_here_txt);
 		type.set ("assets/images/images-go-here.txt", AssetType.TEXT);
 		
+		className.set ("assets/images/lamp.png", __ASSET__assets_images_lamp_png);
+		type.set ("assets/images/lamp.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/lamp.psd", __ASSET__assets_images_lamp_psd);
+		type.set ("assets/images/lamp.psd", AssetType.BINARY);
+		
+		className.set ("assets/images/lampLightCone.png", __ASSET__assets_images_lamplightcone_png);
+		type.set ("assets/images/lampLightCone.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/lampLightCone.psd", __ASSET__assets_images_lamplightcone_psd);
+		type.set ("assets/images/lampLightCone.psd", AssetType.BINARY);
+		
+		className.set ("assets/images/lampLightCone_green.png", __ASSET__assets_images_lamplightcone_green_png);
+		type.set ("assets/images/lampLightCone_green.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/moon.png", __ASSET__assets_images_moon_png);
+		type.set ("assets/images/moon.png", AssetType.IMAGE);
+		
 		className.set ("assets/images/pixel sun.png", __ASSET__assets_images_pixel_sun_png);
 		type.set ("assets/images/pixel sun.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/red shine.png", __ASSET__assets_images_red_shine_png);
+		type.set ("assets/images/red shine.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/red shine2.png", __ASSET__assets_images_red_shine2_png);
+		type.set ("assets/images/red shine2.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/red wall lamp.png", __ASSET__assets_images_red_wall_lamp_png);
+		type.set ("assets/images/red wall lamp.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/red wall lamp2.png", __ASSET__assets_images_red_wall_lamp2_png);
+		type.set ("assets/images/red wall lamp2.png", AssetType.IMAGE);
 		
 		className.set ("assets/images/tile_brickwall2.png", __ASSET__assets_images_tile_brickwall2_png);
 		type.set ("assets/images/tile_brickwall2.png", AssetType.IMAGE);
@@ -889,7 +989,17 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep @:bind #if display private #end class __ASSET__assets_images_gameobject_armchairb_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_glow_light_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_images_go_here_txt extends flash.utils.ByteArray { }
+@:keep @:bind #if display private #end class __ASSET__assets_images_lamp_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_lamp_psd extends flash.utils.ByteArray { }
+@:keep @:bind #if display private #end class __ASSET__assets_images_lamplightcone_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_lamplightcone_psd extends flash.utils.ByteArray { }
+@:keep @:bind #if display private #end class __ASSET__assets_images_lamplightcone_green_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_moon_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_pixel_sun_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_red_shine_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_red_shine2_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_red_wall_lamp_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_red_wall_lamp2_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_tile_brickwall2_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_music_music_goes_here_txt extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__assets_sounds_sounds_go_here_txt extends flash.utils.ByteArray { }
@@ -901,6 +1011,16 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 #elseif html5
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -934,7 +1054,17 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:image("assets/images/gameObject_armchairB.png") #if display private #end class __ASSET__assets_images_gameobject_armchairb_png extends lime.graphics.Image {}
 @:image("assets/images/glow-light.png") #if display private #end class __ASSET__assets_images_glow_light_png extends lime.graphics.Image {}
 @:file("assets/images/images-go-here.txt") #if display private #end class __ASSET__assets_images_images_go_here_txt extends lime.utils.Bytes {}
+@:image("assets/images/lamp.png") #if display private #end class __ASSET__assets_images_lamp_png extends lime.graphics.Image {}
+@:file("assets/images/lamp.psd") #if display private #end class __ASSET__assets_images_lamp_psd extends lime.utils.Bytes {}
+@:image("assets/images/lampLightCone.png") #if display private #end class __ASSET__assets_images_lamplightcone_png extends lime.graphics.Image {}
+@:file("assets/images/lampLightCone.psd") #if display private #end class __ASSET__assets_images_lamplightcone_psd extends lime.utils.Bytes {}
+@:image("assets/images/lampLightCone_green.png") #if display private #end class __ASSET__assets_images_lamplightcone_green_png extends lime.graphics.Image {}
+@:image("assets/images/moon.png") #if display private #end class __ASSET__assets_images_moon_png extends lime.graphics.Image {}
 @:image("assets/images/pixel sun.png") #if display private #end class __ASSET__assets_images_pixel_sun_png extends lime.graphics.Image {}
+@:image("assets/images/red shine.png") #if display private #end class __ASSET__assets_images_red_shine_png extends lime.graphics.Image {}
+@:image("assets/images/red shine2.png") #if display private #end class __ASSET__assets_images_red_shine2_png extends lime.graphics.Image {}
+@:image("assets/images/red wall lamp.png") #if display private #end class __ASSET__assets_images_red_wall_lamp_png extends lime.graphics.Image {}
+@:image("assets/images/red wall lamp2.png") #if display private #end class __ASSET__assets_images_red_wall_lamp2_png extends lime.graphics.Image {}
 @:image("assets/images/tile_brickwall2.png") #if display private #end class __ASSET__assets_images_tile_brickwall2_png extends lime.graphics.Image {}
 @:file("assets/music/music-goes-here.txt") #if display private #end class __ASSET__assets_music_music_goes_here_txt extends lime.utils.Bytes {}
 @:file("assets/sounds/sounds-go-here.txt") #if display private #end class __ASSET__assets_sounds_sounds_go_here_txt extends lime.utils.Bytes {}

@@ -28,6 +28,9 @@ class PlayState extends FlxState
 	
 	public var girlSprite:FlxSprite;
 	
+	public var lampSprite:FlxSprite;
+	public var wallLampSprite:FlxSprite;
+	
 	public var silhouette:FlxSprite;
 	
 	public var darkness:BitmapData;
@@ -36,6 +39,9 @@ class PlayState extends FlxState
 	
 	public var lightCone:FlxSprite;
 	public var mouseLightCone:FlxSprite;
+	public var lampLightCone:FlxSprite;
+	public var redLightCone:FlxSprite;
+	
 	
 	public var lightButton:FlxButton;
 	
@@ -55,7 +61,7 @@ class PlayState extends FlxState
 		
 		this.silhouette = new FlxSprite(0, 0);
 		this.silhouette.makeGraphic(640, 480, 0x00000000);
-		this.darkness = new BitmapData(640, 480, true, 0xFF000000);
+		this.darkness = new BitmapData(640, 480, true, 0xFF220000);
 		
 		this.tileMapBuffer = new FlxTilemapBuffer(32, 32, 20, 8);
 		
@@ -63,13 +69,13 @@ class PlayState extends FlxState
 		this.cloudSprite.loadGraphic("assets/images/cloud01.png", false, 108, 26, false);
 		this.add(this.cloudSprite);
 		
-		this.sunSprite = new FlxSprite(350, 40);
-		this.sunSprite.loadGraphic("assets/images/pixel sun.png", false, 128, 133, false);
+		this.sunSprite = new FlxSprite(400, 75);
+		this.sunSprite.loadGraphic("assets/images/pixel sun.png", false, 64, 64, false);
 		this.add(this.sunSprite);
 		this.sunSprite.blend = HARDLIGHT;
 		
-		this.moonSprite = new FlxSprite(350, 30);
-		this.moonSprite.loadGraphic("assets/images/blood_moon.png", false, 128, 128, false);
+		this.moonSprite = new FlxSprite(350, 80);
+		this.moonSprite.loadGraphic("assets/images/moon.png", false, 64, 64, false);
 		this.add(this.moonSprite);
 		this.moonSprite.visible = false;
 		
@@ -112,6 +118,24 @@ class PlayState extends FlxState
 		
 		this.girlSprite.velocity.x = 100;
 		
+		
+		this.lampSprite = new FlxSprite(75, 100);
+		this.lampSprite.loadGraphic("assets/images/lamp.png", true, 30, 60, false);
+		this.add(lampSprite);
+		
+		this.lampLightCone = new FlxSprite(45, 145);
+		this.lampLightCone.loadGraphic("assets/images/lampLightCone.png", true, 90, 102, false);
+		
+		
+		this.wallLampSprite = new FlxSprite(570, 160);
+		this.wallLampSprite.loadGraphic("assets/images/red wall lamp.png", true, 20, 30, false);
+		this.add(wallLampSprite);
+		
+		this.redLightCone = new FlxSprite(500, 100);
+		this.redLightCone.loadGraphic("assets/images/red shine2.png", true, 163, 163, false);
+		
+		
+		
 		this.lightCone = new FlxSprite(320, 211);
 		this.lightCone.loadGraphic("assets/images/glow-light.png", false, 64, 64, false);
 		
@@ -124,6 +148,7 @@ class PlayState extends FlxState
 		
 		this.lightButton = new FlxButton(550, 20, "Day/Night", onLightButtonClick);
 		this.add(this.lightButton);
+		
 		
 	}
 	
@@ -152,12 +177,25 @@ class PlayState extends FlxState
 		_flashRect2.height =  this.girlSprite.framePixels.height;
 		
 		
-		this.girlSprite.updateFramePixels();
-		//this.silhouette.pixels.copyPixels(this.darkness, _flashRect2, new Point(this.girlSprite.x, this.girlSprite.y), this.girlSprite.framePixels, new Point (0,0), true);
+		//this.girlSprite.updateFramePixels();
+		//
 		
-		this.silhouette.pixels.copyPixels(this.darkness, _flashRect2, new Point(this.girlSprite.x, this.girlSprite.y), this.girlSprite.pixels, _flashPoint, true);
+		
+		if (this.girlSprite.flipX)
+		{
+			//girlSprite.framePixels.fillRect(girlSprite.framePixels.rect, 0x00000000);
+			girlSprite.framePixels = girlSprite.frame.paintRotatedAndFlipped(null, new Point (0,0), 0, true, false, false, true);
+			this.silhouette.pixels.copyPixels(this.darkness, _flashRect2, new Point(this.girlSprite.x, this.girlSprite.y), this.girlSprite.framePixels, new Point (0,0), true);
+		}
+		else
+		{
+			this.silhouette.pixels.copyPixels(this.darkness, _flashRect2, new Point(this.girlSprite.x, this.girlSprite.y), this.girlSprite.pixels, _flashPoint, true);
+		}
+		
 		_flashRect2.width =  this.girlSprite.framePixels.width;
 		_flashRect2.height =  this.girlSprite.framePixels.height;
+		
+		
 		
 		
 		
@@ -165,10 +203,12 @@ class PlayState extends FlxState
 		
 		
 		
-		this.silhouette.stamp(this.lightCone, Std.int(this.lightCone.x), Std.int(this.lightCone.y));
+		//this.silhouette.stamp(this.lightCone, Std.int(this.lightCone.x), Std.int(this.lightCone.y));
 		this.silhouette.stamp(this.mouseLightCone, Std.int(this.mouseLightCone.x), Std.int(this.mouseLightCone.y));
+		this.silhouette.stamp(this.lampLightCone, Std.int(this.lampLightCone.x), Std.int(this.lampLightCone.y));
+		this.silhouette.stamp(this.redLightCone, Std.int(this.redLightCone.x), Std.int(this.redLightCone.y));
 		
-		this.silhouette.alpha = 0.9;
+		//this.silhouette.alpha = 0.9;
 		//this.silhouette.blend = LIGHTEN;
 	}
 	
@@ -178,11 +218,13 @@ class PlayState extends FlxState
 	{
 		if (_day)
 		{
-			this.bgColor = 0xFF112233;
-			this.cloudSprite.color = 0xFF112233;
+			this.bgColor = 0xFF001122;
+			this.cloudSprite.color = 0xFF001122;
 			this.silhouette.visible = true;
 			this.moonSprite.visible = true;
 			this.sunSprite.visible = false;
+			this.lampSprite.frame = lampSprite.frames.getByIndex(1);
+			this.wallLampSprite.frame = wallLampSprite.frames.getByIndex(1);
 		}
 		else
 		{
@@ -191,6 +233,8 @@ class PlayState extends FlxState
 			this.silhouette.visible = false;
 			this.moonSprite.visible = false;
 			this.sunSprite.visible = true;
+			this.lampSprite.frame = lampSprite.frames.getByIndex(0);
+			this.wallLampSprite.frame = wallLampSprite.frames.getByIndex(0);
 		}
 		
 		_day = !_day;
