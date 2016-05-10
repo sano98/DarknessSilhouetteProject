@@ -46,6 +46,18 @@ class ApplicationMain {
 		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
+		urls.push ("assets/images/fire sprite.png");
+		types.push (lime.Assets.AssetType.IMAGE);
+		
+		
+		urls.push ("assets/images/fire sprite.psd");
+		types.push (lime.Assets.AssetType.BINARY);
+		
+		
+		urls.push ("assets/images/fireshine.png");
+		types.push (lime.Assets.AssetType.IMAGE);
+		
+		
 		urls.push ("assets/images/gameObject_armchairB.png");
 		types.push (lime.Assets.AssetType.IMAGE);
 		
@@ -82,6 +94,10 @@ class ApplicationMain {
 		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
+		urls.push ("assets/images/palm.png");
+		types.push (lime.Assets.AssetType.IMAGE);
+		
+		
 		urls.push ("assets/images/pixel sun.png");
 		types.push (lime.Assets.AssetType.IMAGE);
 		
@@ -99,6 +115,10 @@ class ApplicationMain {
 		
 		
 		urls.push ("assets/images/red wall lamp2.png");
+		types.push (lime.Assets.AssetType.IMAGE);
+		
+		
+		urls.push ("assets/images/sunsetsun.png");
 		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
@@ -195,7 +215,7 @@ class ApplicationMain {
 		
 		config = {
 			
-			build: "246",
+			build: "399",
 			company: "HaxeFlixel",
 			file: "DarknessSilhouetteProject",
 			fps: 60,
