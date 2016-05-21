@@ -79,6 +79,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
 		openfl.text.Font.registerFont (__ASSET__OPENFL__flixel_fonts_nokiafc22_ttf);
 		openfl.text.Font.registerFont (__ASSET__OPENFL__flixel_fonts_monsterrat_ttf);
 		
@@ -129,6 +130,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/images/red shine2.png", AssetType.IMAGE);
 		className.set ("assets/images/red wall lamp.png", __ASSET__assets_images_red_wall_lamp_png);
 		type.set ("assets/images/red wall lamp.png", AssetType.IMAGE);
+		className.set ("assets/images/red wall lamp.psd", __ASSET__assets_images_red_wall_lamp_psd);
+		type.set ("assets/images/red wall lamp.psd", AssetType.BINARY);
 		className.set ("assets/images/red wall lamp2.png", __ASSET__assets_images_red_wall_lamp2_png);
 		type.set ("assets/images/red wall lamp2.png", AssetType.IMAGE);
 		className.set ("assets/images/sunsetsun.png", __ASSET__assets_images_sunsetsun_png);
@@ -238,6 +241,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		path.set (id, id);
 		
 		type.set (id, AssetType.IMAGE);
+		id = "assets/images/red wall lamp.psd";
+		path.set (id, id);
+		
+		type.set (id, AssetType.BINARY);
 		id = "assets/images/red wall lamp2.png";
 		path.set (id, id);
 		
@@ -358,6 +365,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("assets/images/red wall lamp.png", __ASSET__assets_images_red_wall_lamp_png);
 		type.set ("assets/images/red wall lamp.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/red wall lamp.psd", __ASSET__assets_images_red_wall_lamp_psd);
+		type.set ("assets/images/red wall lamp.psd", AssetType.BINARY);
 		
 		className.set ("assets/images/red wall lamp2.png", __ASSET__assets_images_red_wall_lamp2_png);
 		type.set ("assets/images/red wall lamp2.png", AssetType.IMAGE);
@@ -1053,6 +1063,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep @:bind #if display private #end class __ASSET__assets_images_red_shine_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_red_shine2_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_red_wall_lamp_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_red_wall_lamp_psd extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__assets_images_red_wall_lamp2_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_sunsetsun_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_tile_brickwall2_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
@@ -1066,6 +1077,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 #elseif html5
+
 
 
 
@@ -1128,6 +1140,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:image("assets/images/red shine.png") #if display private #end class __ASSET__assets_images_red_shine_png extends lime.graphics.Image {}
 @:image("assets/images/red shine2.png") #if display private #end class __ASSET__assets_images_red_shine2_png extends lime.graphics.Image {}
 @:image("assets/images/red wall lamp.png") #if display private #end class __ASSET__assets_images_red_wall_lamp_png extends lime.graphics.Image {}
+@:file("assets/images/red wall lamp.psd") #if display private #end class __ASSET__assets_images_red_wall_lamp_psd extends lime.utils.Bytes {}
 @:image("assets/images/red wall lamp2.png") #if display private #end class __ASSET__assets_images_red_wall_lamp2_png extends lime.graphics.Image {}
 @:image("assets/images/sunsetsun.png") #if display private #end class __ASSET__assets_images_sunsetsun_png extends lime.graphics.Image {}
 @:image("assets/images/tile_brickwall2.png") #if display private #end class __ASSET__assets_images_tile_brickwall2_png extends lime.graphics.Image {}

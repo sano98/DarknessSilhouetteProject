@@ -114,6 +114,10 @@ class ApplicationMain {
 		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
+		urls.push ("assets/images/red wall lamp.psd");
+		types.push (lime.Assets.AssetType.BINARY);
+		
+		
 		urls.push ("assets/images/red wall lamp2.png");
 		types.push (lime.Assets.AssetType.IMAGE);
 		
@@ -215,7 +219,7 @@ class ApplicationMain {
 		
 		config = {
 			
-			build: "399",
+			build: "497",
 			company: "HaxeFlixel",
 			file: "DarknessSilhouetteProject",
 			fps: 60,

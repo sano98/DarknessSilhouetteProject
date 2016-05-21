@@ -58,8 +58,8 @@ class PlayState extends FlxState
 	
 	public var tileMapBuffer:FlxTilemapBuffer;
 	
-	
-	
+	public var dolly:FlxSprite;
+	public var MOUSE_WHEEL_SPEED:Float;
 	
 	public var lightCone:FlxSprite;
 	public var mouseLightCone:FlxSprite;
@@ -82,7 +82,8 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		FlxG.worldBounds.set( 0, 0, 640, 480); 
-		FlxG.camera.setScrollBoundsRect(0, 0, 640, 480, true);
+		FlxG.camera.setScrollBoundsRect(0, 0, 640, 1000, false);
+		this.MOUSE_WHEEL_SPEED = 25;
 		
 		
 		this._lightMood = 0;
@@ -99,7 +100,13 @@ class PlayState extends FlxState
 		
 		
 		
-		this.tileMapBuffer = new FlxTilemapBuffer(32, 32, 20, 8);
+		this.dolly = new FlxSprite(50, 128);
+		//this.dolly.visible = false;
+
+		//FlxG.camera.follow(this.dolly, FlxCameraFollowStyle.LOCKON, null);
+		
+		
+
 		
 		
 		
@@ -112,6 +119,7 @@ class PlayState extends FlxState
 		this.sunSetSunSprite.loadGraphic("assets/images/sunsetsun.png", false, 128, 128, false);
 		this.add(this.sunSetSunSprite);
 		this.sunSetSunSprite.visible = false;
+		this.sunSetSunSprite.scrollFactor.y = 0.5;
 
 		
 		this.moonSprite = new FlxSprite(350, 80);
@@ -127,6 +135,24 @@ class PlayState extends FlxState
 		this.brickString = "0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3;\n";
 		this.brickString = this.brickString + "0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3;\n";
 		this.brickString = this.brickString + "0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3;\n";
+		
+		this.brickString = this.brickString + "0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3;\n";
+		
+		this.brickString = this.brickString + "0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3;\n";
+		this.brickString = this.brickString + "0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3;\n";
 		this.brickString = this.brickString + "0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3;\n";
 		this.brickString = this.brickString + "0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3;\n";
 		this.brickString = this.brickString + "0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3, 4, 4, 4, 4, 0, 1, 2, 3;\n";
@@ -137,9 +163,15 @@ class PlayState extends FlxState
 		
 		
 		
+		
 		this.brickTileMap = new FlxTilemap();
 		this.brickTileMap.loadMapFromCSV(brickString, "assets/images/tile_brickwall2.png", 32, 32, 0, 0, 0);
+		//this.brickTileMap.y = 200;
+		
 		this.add(brickTileMap);
+		
+		this.tileMapBuffer = new FlxTilemapBuffer(32, 32, Std.int(640/32), Std.int(480/32));
+		//this.tileMapBuffer.pixelPerfectRender = true;
 		
 	
 		
@@ -216,9 +248,12 @@ class PlayState extends FlxState
 		//The darkness layer.
 		this.add(this.silhouette);
 		this.silhouette.blend = MULTIPLY;
+		this.silhouette.scrollFactor.y = 1; //must be 1 because of the sprites
 		
 		this.lightButton = new FlxButton(550, 20, "Day/Night", onLightButtonClick);
 		this.add(this.lightButton);
+		
+		this.add(dolly);
 		
 		
 	}
@@ -234,8 +269,34 @@ class PlayState extends FlxState
 		this.silhouette.pixels.copyPixels(this.darkness, new Rectangle(0, 0, 640, 480), new Point(this.palmSprite.x, this.palmSprite.y), this.palmSprite.pixels, this._zeroPoint, true);
 		
 		//A tilemap:
+		
+		var _point:Point = new Point();
+		_point.x = (FlxG.camera.scroll.x * this.brickTileMap.scrollFactor.x) - this.brickTileMap.x - this.brickTileMap.offset.x; //modified from getScreenPosition()
+		_point.y = -(FlxG.camera.scroll.y * this.brickTileMap.scrollFactor.y) - this.brickTileMap.y - this.brickTileMap.offset.y;
+		
+		trace("FlxG.camera.scroll.y: " + FlxG.camera.scroll.y);
+		
+		//this.tileMapBuffer = new FlxTilemapBuffer(32, 32, this.brickTileMap.widthInTiles, this.brickTileMap.heightInTiles);
+		
+		
+		
+		
+		//getScreenPosition(_point, camera).subtractPoint(this.brickTileMap.offset).add(this.tileMapBuffer.x, this.tileMapBuffer.y).copyToFlash(_flashPoint);
+		//this.tileMapBuffer.draw(FlxG.camera, this._zeroPoint);
+		
+		
+		
+		
+		
 		this.brickTileMap.drawTilemap(this.tileMapBuffer, this.camera);
-		this.silhouette.pixels.copyPixels(this.darkness, new Rectangle(0, 0, 640, 480), this._zeroPoint, this.tileMapBuffer.pixels, this._zeroPoint, true);
+		this.silhouette.pixels.copyPixels(this.darkness, this.darkness.rect, this._zeroPoint, this.tileMapBuffer.pixels, _point, true);
+		
+		
+		trace("buffer.y: " + this.tileMapBuffer.y);
+		
+		//this.silhouette.pixels.copyPixels(this.darkness, new Rectangle(0, 0, 640, 480), this._zeroPoint, this.tileMapBuffer.pixels, this._zeroPoint, true);
+		
+		
 		
 		//An animated sprite:
 		var _flashRect2 = new Rectangle(0, 0, this.girlSprite.framePixels.width, this.girlSprite.framePixels.height);
@@ -396,10 +457,50 @@ class PlayState extends FlxState
 		}
 	}
 	
+	public function mouseWheelHandler():Void
+	{
+		
+		if ((this.dolly.y - FlxG.mouse.wheel * this.MOUSE_WHEEL_SPEED) < this.camera.minScrollY)
+		{
+			this.dolly.y = this.camera.minScrollY;
+		}
+		else if ((this.dolly.y - FlxG.mouse.wheel * this.MOUSE_WHEEL_SPEED) > (this.camera.maxScrollY))
+		{
+			this.dolly.y = this.camera.maxScrollY;
+		}
+		else
+		{
+			this.dolly.y -= FlxG.mouse.wheel * this.MOUSE_WHEEL_SPEED;
+		}
+		
+	}
+	
 
 	override public function update(elapsed:Float):Void
 	{
-		super.update(elapsed);
+		
+		super.update(elapsed); //must come before the updatSilhouette()-call, or else the darkness-layer of animated sprites wil have a lag of 1 or more pixels
+		
+		if (FlxG.keys.justPressed.U)
+		{
+			FlxG.camera.scroll.y += 32;
+			//this.dolly.y += 32;
+		}
+		
+		if (FlxG.mouse.wheel != 0)
+		{
+			mouseWheelHandler();
+		}
+		
+		if (FlxG.keys.justPressed.D)
+		{
+			FlxG.camera.scroll.y -= 32;
+			//this.dolly.y -= 32;
+		}
+		
+		
+		
+		
 		
 		if (_lightMood > 0)
 		{
@@ -412,5 +513,8 @@ class PlayState extends FlxState
 		{
 			girlDirection();
 		}
+		
+		
+		
 	}
 }
