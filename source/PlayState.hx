@@ -6,6 +6,7 @@ import flash.geom.Rectangle;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.group.FlxGroup;
 import flixel.math.FlxMatrix;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
@@ -43,6 +44,10 @@ class PlayState extends FlxState
 	public var lampSprite:FlxSprite;
 	public var wallLampSprite:FlxSprite;
 	public var fireSprite:FlxSprite;
+	public var generatorSprite:FlxSprite;
+	
+	
+	public var lightGroup:FlxTypedGroup<FlxSprite>;
 	
 	
 	/**
@@ -56,6 +61,8 @@ class PlayState extends FlxState
 	 */
 	public var darkness:BitmapData;
 	
+	public var shadowCamera:FlxCamera;
+	
 	public var tileMapBuffer:FlxTilemapBuffer;
 	
 	public var dolly:FlxSprite;
@@ -67,24 +74,40 @@ class PlayState extends FlxState
 	public var redLightCone:FlxSprite;
 	public var fireShineCone:FlxSprite;
 	
+	public var glowLightCone:FlxSprite;
+	
 	
 	public var lightButton:FlxButton;
 	
 	//Switches through the different daytimes or lighting moods
 	private var _lightMood:Int;
 	
+	private var _lightsOn:Bool = true;
+	
 	/**
 	 * Just to avoid creating a point at 0|0 all the time in the bitmap copy functions
 	 */
 	private var _zeroPoint:Point;
 	
+	private var _lastFramesMouseWheel:Int;
+	
 	
 	override public function create():Void
 	{
-		FlxG.worldBounds.set( 0, 0, 640, 480); 
-		FlxG.camera.setScrollBoundsRect(0, 0, 640, 1000, false);
-		this.MOUSE_WHEEL_SPEED = 25;
+		FlxG.worldBounds.set( 0, 0, 640, 768); 
+		FlxG.camera.setScrollBoundsRect(0, 0, 640, 768, false);
+		this.MOUSE_WHEEL_SPEED = 16; //must be a multiple of tile size in pixels if not using the shadow camera
+		this._lastFramesMouseWheel = 0;
 		
+		this.lightGroup = new FlxTypedGroup<FlxSprite>();
+		
+		trace("FlxG.camera size: " + FlxG.camera.width + "|" + FlxG.camera.height);
+		
+		this.shadowCamera = new FlxCamera(0, 0, 640, 480, 0);
+		this.shadowCamera.setScrollBoundsRect(0, 0, 640, 768, false);
+		
+		
+		//FlxG.cameras.add(this.shadowCamera);// <- if it is added, the darkness covers the whole screen. No idea why; even happens if camera.buffer gets erased each step.
 		
 		this._lightMood = 0;
 		this._zeroPoint = new Point(0, 0);
@@ -100,14 +123,7 @@ class PlayState extends FlxState
 		
 		
 		
-		this.dolly = new FlxSprite(50, 128);
-		//this.dolly.visible = false;
-
-		//FlxG.camera.follow(this.dolly, FlxCameraFollowStyle.LOCKON, null);
-		
-		
-
-		
+		this.dolly = new FlxSprite(50, 0);
 		
 		
 		this.sunSprite = new FlxSprite(400, 75);
@@ -166,23 +182,31 @@ class PlayState extends FlxState
 		
 		this.brickTileMap = new FlxTilemap();
 		this.brickTileMap.loadMapFromCSV(brickString, "assets/images/tile_brickwall2.png", 32, 32, 0, 0, 0);
-		//this.brickTileMap.y = 200;
+		
+		this.brickTileMap.set_cameras([FlxG.camera, this.shadowCamera]);
 		
 		this.add(brickTileMap);
 		
-		this.tileMapBuffer = new FlxTilemapBuffer(32, 32, Std.int(640/32), Std.int(480/32));
-		//this.tileMapBuffer.pixelPerfectRender = true;
-		
-	
+		//this.tileMapBuffer = new FlxTilemapBuffer(32, 32, Std.int(640/32), Std.int(480/32) + 1);
 		
 		this.couchSprite = new FlxSprite(100, 211);
 		this.couchSprite.loadGraphic("assets/images/gameObject_armchairB.png", false, 59, 45, false);
 		this.add(this.couchSprite);
 		
+		this.couchSprite.set_cameras([FlxG.camera, this.shadowCamera]);
+		
 		this.palmSprite = new FlxSprite(370, 160);
 		this.palmSprite.loadGraphic("assets/images/palm.png", false, 64, 96, false);
 		this.add(this.palmSprite);
 		
+		this.palmSprite.set_cameras([FlxG.camera, this.shadowCamera]);
+		
+		this.generatorSprite = new FlxSprite(480, 200);
+		this.generatorSprite.loadGraphic("assets/images/gameObject_generator.png", true, 49, 44, false);
+		this.add(this.generatorSprite);
+		this.generatorSprite.animation.add("running", [0, 1], 24, true, false, false);
+		
+		this.generatorSprite.set_cameras([FlxG.camera, this.shadowCamera]);
 		
 		
 		
@@ -219,6 +243,9 @@ class PlayState extends FlxState
 		
 		this.girlSprite.velocity.x = 100;
 		
+		//this.girlSprite.set_cameras([FlxG.camera, this.shadowCamera]);
+		
+		
 		
 		//Light cones. They are stamped onto the darkness, but are not visible themselves
 		//Animated light cones must be added, or else the animation won't play; 
@@ -236,11 +263,14 @@ class PlayState extends FlxState
 		this.mouseLightCone = new FlxSprite(FlxG.mouse.x, FlxG.mouse.y);
 		this.mouseLightCone.loadGraphic("assets/images/glow-light.png", false, 64, 64, false);
 		
+		this.glowLightCone = new FlxSprite(this.generatorSprite.x + 28, this.generatorSprite.y + 24);
+		this.glowLightCone.loadGraphic("assets/images/powerswitch_light.png", true, 4, 4);
+		
 		this.fireShineCone  = new FlxSprite(250, 150);
 		this.fireShineCone.loadGraphic("assets/images/fireshine.png", true, 128, 128, false);
 		this.fireShineCone.animation.add("burning", [0, 1, 2], 8);
 		this.fireShineCone.animation.play("burning");
-		this.add(this.fireShineCone);
+		this.lightGroup.add(this.fireShineCone);
 		this.fireShineCone.visible = false;
 		
 		
@@ -248,12 +278,13 @@ class PlayState extends FlxState
 		//The darkness layer.
 		this.add(this.silhouette);
 		this.silhouette.blend = MULTIPLY;
-		this.silhouette.scrollFactor.y = 1; //must be 1 because of the sprites
+		this.silhouette.scrollFactor.y = 0; //must be 1 because of the sprites  -> Fuck That! We'll just consider the scroll factor in copyPixels 
 		
 		this.lightButton = new FlxButton(550, 20, "Day/Night", onLightButtonClick);
 		this.add(this.lightButton);
 		
 		this.add(dolly);
+		this.add(this.lightGroup);
 		
 		
 	}
@@ -264,64 +295,69 @@ class PlayState extends FlxState
 		//Clear the shilouette:
 		this.silhouette.pixels = new BitmapData(640, 480, true, 0x000000);
 		
+		
 		//A static sprite:
-		this.silhouette.pixels.copyPixels(this.darkness, new Rectangle(0, 0, 640, 480), new Point(this.couchSprite.x, this.couchSprite.y), this.couchSprite.pixels, this._zeroPoint, true);
-		this.silhouette.pixels.copyPixels(this.darkness, new Rectangle(0, 0, 640, 480), new Point(this.palmSprite.x, this.palmSprite.y), this.palmSprite.pixels, this._zeroPoint, true);
+		//this.silhouette.pixels.copyPixels(this.darkness, new Rectangle(0, 0, 640, 480), new Point(this.couchSprite.x, this.couchSprite.y - FlxG.camera.scroll.y), this.couchSprite.pixels, this._zeroPoint, true);
+		//this.silhouette.pixels.copyPixels(this.darkness, new Rectangle(0, 0, 640, 480), new Point(this.palmSprite.x, this.palmSprite.y - FlxG.camera.scroll.y), this.palmSprite.pixels, this._zeroPoint, true);
 		
 		//A tilemap:
 		
 		var _point:Point = new Point();
-		_point.x = (FlxG.camera.scroll.x * this.brickTileMap.scrollFactor.x) - this.brickTileMap.x - this.brickTileMap.offset.x; //modified from getScreenPosition()
-		_point.y = -(FlxG.camera.scroll.y * this.brickTileMap.scrollFactor.y) - this.brickTileMap.y - this.brickTileMap.offset.y;
 		
-		trace("FlxG.camera.scroll.y: " + FlxG.camera.scroll.y);
-		
-		//this.tileMapBuffer = new FlxTilemapBuffer(32, 32, this.brickTileMap.widthInTiles, this.brickTileMap.heightInTiles);
+		_point.x = 0;
+		_point.y = ((FlxG.camera.scroll.y - this.brickTileMap.y ) - this.brickTileMap.offset.y);
 		
 		
+		//_point.x = (FlxG.camera.scroll.x * this.brickTileMap.scrollFactor.x) - this.brickTileMap.x - this.brickTileMap.offset.x; //modified from getScreenPosition()
+		//_point.y = -(FlxG.camera.scroll.y * this.brickTileMap.scrollFactor.y) - this.brickTileMap.y - this.brickTileMap.offset.y;
 		
 		
-		//getScreenPosition(_point, camera).subtractPoint(this.brickTileMap.offset).add(this.tileMapBuffer.x, this.tileMapBuffer.y).copyToFlash(_flashPoint);
-		//this.tileMapBuffer.draw(FlxG.camera, this._zeroPoint);
+		//this.brickTileMap.drawTilemap(this.tileMapBuffer, FlxG.camera);
+		//this.silhouette.pixels.copyPixels(this.darkness, new Rectangle(0, 0, 640, 480), _point , this.tileMapBuffer.pixels, _point, true);
 		
+		this.silhouette.pixels.copyPixels(this.darkness, this.darkness.rect, this._zeroPoint, this.shadowCamera.buffer, this._zeroPoint, true);
+		this.shadowCamera.buffer.fillRect(this.shadowCamera.buffer.rect, 0x00000000);
 		
-		
-		
-		
-		this.brickTileMap.drawTilemap(this.tileMapBuffer, this.camera);
-		this.silhouette.pixels.copyPixels(this.darkness, this.darkness.rect, this._zeroPoint, this.tileMapBuffer.pixels, _point, true);
-		
-		
-		trace("buffer.y: " + this.tileMapBuffer.y);
-		
-		//this.silhouette.pixels.copyPixels(this.darkness, new Rectangle(0, 0, 640, 480), this._zeroPoint, this.tileMapBuffer.pixels, this._zeroPoint, true);
-		
+		//Stamp out the glow of the silhouette:
+		this.silhouette.stamp(this.glowLightCone, Std.int(this.glowLightCone.x), Std.int(this.glowLightCone.y - FlxG.camera.scroll.y));
 		
 		
 		//An animated sprite:
+		
+		
 		var _flashRect2 = new Rectangle(0, 0, this.girlSprite.framePixels.width, this.girlSprite.framePixels.height);
-		
-		
 		
 		if (this.girlSprite.flipX)
 		{
 			girlSprite.framePixels = girlSprite.frame.paintRotatedAndFlipped(null, this._zeroPoint, 0, true, false, false, true);
-			this.silhouette.pixels.copyPixels(this.darkness, _flashRect2, new Point(this.girlSprite.x, this.girlSprite.y), this.girlSprite.framePixels, this._zeroPoint, true);
+			this.silhouette.pixels.copyPixels(this.darkness, _flashRect2, new Point(this.girlSprite.x, this.girlSprite.y - FlxG.camera.scroll.y), this.girlSprite.framePixels, this._zeroPoint, true);
 		}
 		else
 		{
-			this.silhouette.pixels.copyPixels(this.darkness, _flashRect2, new Point(this.girlSprite.x, this.girlSprite.y), this.girlSprite.pixels, new Point(girlSprite.frame.frame.x, girlSprite.frame.frame.y), true);
+			this.silhouette.pixels.copyPixels(this.darkness, _flashRect2, new Point(this.girlSprite.x, this.girlSprite.y - FlxG.camera.scroll.y), this.girlSprite.pixels, new Point(girlSprite.frame.frame.x, girlSprite.frame.frame.y), true);
 		}
 		
 		
 		
-		//Stamp out the light of the silhouette:
-		this.silhouette.stamp(this.mouseLightCone, Std.int(this.mouseLightCone.x), Std.int(this.mouseLightCone.y));
-		this.silhouette.stamp(this.lampLightCone, Std.int(this.lampLightCone.x), Std.int(this.lampLightCone.y));
-		this.silhouette.stamp(this.redLightCone, Std.int(this.redLightCone.x), Std.int(this.redLightCone.y));
-		this.silhouette.stamp(this.fireShineCone, Std.int(this.fireShineCone.x), Std.int(this.fireShineCone.y));
-		this.silhouette.stamp(this.fireSprite, Std.int(this.fireSprite.x), Std.int(this.fireSprite.y));
+		//this.shadowCamera.fill(0x00000000, false); //seems to work the same as shadowCamera.buffer.fillRect. No difference visisble.
 		
+		
+		//Stamp out the light of the silhouette:
+		if (this._lightsOn)
+		{
+			this.silhouette.stamp(this.mouseLightCone, Std.int(this.mouseLightCone.x), Std.int(this.mouseLightCone.y - FlxG.camera.scroll.y));
+			this.silhouette.stamp(this.lampLightCone, Std.int(this.lampLightCone.x), Std.int(this.lampLightCone.y - FlxG.camera.scroll.y));
+			this.silhouette.stamp(this.redLightCone, Std.int(this.redLightCone.x), Std.int(this.redLightCone.y - FlxG.camera.scroll.y));
+			//this.silhouette.stamp(this.fireShineCone, Std.int(this.fireShineCone.x), Std.int(this.fireShineCone.y - FlxG.camera.scroll.y));
+			this.silhouette.stamp(this.fireSprite, Std.int(this.fireSprite.x), Std.int(this.fireSprite.y - FlxG.camera.scroll.y));
+			
+			for (m in 0...this.lightGroup.members.length)
+				{
+					this.silhouette.stamp(this.lightGroup.members[m], Std.int(this.lightGroup.members[m].x), Std.int(this.lightGroup.members[m].y - FlxG.camera.scroll.y));	
+				}
+		}
+		this.silhouette.dirty = true;
+
 	}
 	
 	private function _modifyDarkness():Void
@@ -378,6 +414,8 @@ class PlayState extends FlxState
 			this.lampSprite.frame = lampSprite.frames.getByIndex(0);
 			this.wallLampSprite.frame = wallLampSprite.frames.getByIndex(0);
 			this.fireSprite.visible = false;
+			this.glowLightCone.frame = this.glowLightCone.frames.getByIndex(0);
+			this.generatorSprite.animation.stop();
 		}
 		//sunset
 		else if (_lightMood == 1)
@@ -392,6 +430,8 @@ class PlayState extends FlxState
 			
 			this.lampSprite.frame = lampSprite.frames.getByIndex(1);
 			this.wallLampSprite.frame = wallLampSprite.frames.getByIndex(1);
+			this.glowLightCone.frame = this.glowLightCone.frames.getByIndex(1);
+			this.generatorSprite.animation.play("running");
 			
 		}
 		//dark night
@@ -441,7 +481,7 @@ class PlayState extends FlxState
 	
 	
 	/**
-	 * Let's the girl turn around before she would leave the stage
+	 * Causes the girl to turn around before she would leave the stage
 	 */
 	public function girlDirection():Void
 	{
@@ -457,56 +497,79 @@ class PlayState extends FlxState
 		}
 	}
 	
+	
+	
+	/**
+	 * Handles the scrolling of the cameras. For some reason unknown, the shadow camera has a 1 frame delay, so the shadow would be behind the scene when scrolling.
+	 * This is resolved by delaying the scrolling of the FlxG.camera by one frame so they're in synch again.
+	 */
 	public function mouseWheelHandler():Void
 	{
+		trace("Mouse wheel handler");
 		
-		if ((this.dolly.y - FlxG.mouse.wheel * this.MOUSE_WHEEL_SPEED) < this.camera.minScrollY)
+		
+		if ((this.shadowCamera.scroll.y - FlxG.mouse.wheel * this.MOUSE_WHEEL_SPEED) < this.shadowCamera.minScrollY)
 		{
-			this.dolly.y = this.camera.minScrollY;
+			this.shadowCamera.scroll.y = this.shadowCamera.minScrollY;
 		}
-		else if ((this.dolly.y - FlxG.mouse.wheel * this.MOUSE_WHEEL_SPEED) > (this.camera.maxScrollY))
+		else if ((this.shadowCamera.scroll.y - FlxG.mouse.wheel * this.MOUSE_WHEEL_SPEED) >= (this.shadowCamera.maxScrollY))
 		{
-			this.dolly.y = this.camera.maxScrollY;
+			this.shadowCamera.scroll.y = this.shadowCamera.minScrollY;
 		}
 		else
 		{
-			this.dolly.y -= FlxG.mouse.wheel * this.MOUSE_WHEEL_SPEED;
+			this.shadowCamera.scroll.y -= FlxG.mouse.wheel * this.MOUSE_WHEEL_SPEED;
 		}
 		
+		this.shadowCamera.updateScroll(); //prevents the overscrolling at the bottom, where I have no clue what the cause is
+		
+		
+		if ((FlxG.camera.scroll.y - this._lastFramesMouseWheel * this.MOUSE_WHEEL_SPEED) < FlxG.camera.minScrollY)
+		{
+			FlxG.camera.scroll.y = FlxG.camera.minScrollY;
+		}
+		else if ((FlxG.camera.scroll.y - this._lastFramesMouseWheel * this.MOUSE_WHEEL_SPEED) >= (FlxG.camera.maxScrollY))
+		{
+			FlxG.camera.scroll.y = FlxG.camera.minScrollY;
+		}
+		else
+		{
+			FlxG.camera.scroll.y -= this._lastFramesMouseWheel * this.MOUSE_WHEEL_SPEED;
+		}
+		
+		this._lastFramesMouseWheel = FlxG.mouse.wheel;
 	}
 	
 
+	
 	override public function update(elapsed:Float):Void
 	{
-		
 		super.update(elapsed); //must come before the updatSilhouette()-call, or else the darkness-layer of animated sprites wil have a lag of 1 or more pixels
 		
-		if (FlxG.keys.justPressed.U)
-		{
-			FlxG.camera.scroll.y += 32;
-			//this.dolly.y += 32;
-		}
 		
-		if (FlxG.mouse.wheel != 0)
+		
+		
+		
+		if ((FlxG.mouse.wheel != 0) || (this._lastFramesMouseWheel != 0))
 		{
 			mouseWheelHandler();
 		}
 		
-		if (FlxG.keys.justPressed.D)
+		if (FlxG.keys.justPressed.U)
 		{
-			FlxG.camera.scroll.y -= 32;
-			//this.dolly.y -= 32;
+			this.shadowCamera.scroll.y += 8;
+			FlxG.camera.scroll.y += 8;
 		}
 		
-		
-		
-		
-		
-		if (_lightMood > 0)
+		if (FlxG.keys.justPressed.D)
 		{
-			this.updateSilhouette();
-			this.mouseLightCone.x = FlxG.mouse.screenX - Std.int(this.mouseLightCone.width / 2);
-			this.mouseLightCone.y = FlxG.mouse.screenY - Std.int(this.mouseLightCone.height / 2);
+			this.shadowCamera.scroll.y -= 8;
+			FlxG.camera.scroll.y -= 8;
+		}
+		
+		if (FlxG.keys.justPressed.S)
+		{
+			this._lightsOn = !this._lightsOn;
 		}
 		
 		if ((this.girlSprite.x < 10) || (this.girlSprite.x > 600))
@@ -514,6 +577,13 @@ class PlayState extends FlxState
 			girlDirection();
 		}
 		
+		if (_lightMood > 0)
+		{
+			this.updateSilhouette();
+			
+			this.mouseLightCone.x = FlxG.mouse.x - Std.int(this.mouseLightCone.width / 2);
+			this.mouseLightCone.y = FlxG.mouse.y - Std.int(this.mouseLightCone.height / 2);
+		}
 		
 		
 	}
